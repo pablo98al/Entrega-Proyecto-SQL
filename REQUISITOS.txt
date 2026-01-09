@@ -1,0 +1,35 @@
+Requisitos del proyecto
+
+Las consultas pueden hacerse de distintas maneras para obtener el mismo resultado. A lo largo del proyecto debes demostrar los siguientes conocimientos:
+
+● Manejo de la herramienta DBeaver.
+
+● Manejo de las consultas con una sola tabla de tu BBDD.
+
+● Manejo de las relaciones entre tablas.
+
+● Manejo de las subconsultas.
+
+● Vistas.
+
+● Estructura de datos temporales.
+
+● Buenas prácticas.
+
+Requisitos del proyecto
+
+Las consultas pueden hacerse de distintas maneras para obtener el mismo resultado. A lo largo del proyecto debes demostrar los siguientes conocimientos:
+
+● Manejo de la herramienta DBeaver.
+
+● Manejo de las consultas con una sola tabla de tu BBDD.
+
+● Manejo de las relaciones entre tablas.
+
+● Manejo de las subconsultas.
+
+● Vistas.
+
+● Estructura de datos temporales.
+
+● Buenas prácticas.
