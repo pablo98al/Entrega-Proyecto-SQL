@@ -140,7 +140,7 @@ FROM film
 
 --22. Crea una columna con el nombre y apellidos de todos los actores y actrices.
 SELECT
-	concat(actor.first_name,' ', actor.last_name) AS "Nombre y apellido actor"
+	concat(actor.first_name,' ', actor.last_name) AS "Actor"
 FROM ACTOR;
 
 --23. Números de alquiler por día, ordenados por cantidad de alquiler de forma descendente.
@@ -152,6 +152,7 @@ GROUP BY DATE(rental.rental_date)
 ORDER BY "Número alquileres"  DESC;
 
 --24. Encuentra las películas con una duración superior al promedio.
+	
 SELECT film.title, "length" as "Duracion"
 FROM film
 WHERE length > (
@@ -159,12 +160,65 @@ WHERE length > (
     FROM film
 );
 
+--25. Averigua el número de alquileres registrados por mes.
+SELECT
+	DATE_TRUNC('month', rental_date) AS Mes,
+    COUNT(*) AS Numero_Alquileres
+FROM rental r 
+GROUP BY DATE_TRUNC('month', rental_date)
+ORDER BY Mes;
 
+--26 Encuentra el promedio, la desviación estándar y varianza del total pagado.
+select 
+	AVG("amount") as "Promedio Cantidad",
+	stddev("amount") as "Desviacion",
+	variance("amount") as "Varianza"
+from payment;
+
+--27. ¿Qué películas se alquilan por encima del precio medio?
+SELECT 
+	p.amount AS "Precio",
+	f.title AS "Película"
+FROM payment p 
+	LEFT JOIN rental r 
+	ON p.rental_id  = r.rental_id 
+	LEFT JOIN inventory i 
+	ON i.inventory_id = r.inventory_id
+	LEFT JOIN film f 
+	ON f.film_id = i.film_id
+WHERE p.amount > (
+	SELECT AVG(p.amount)
+	FROM payment p
+)
+ORDER BY "amount" desc;
+
+--28. Muestra el id de los actores que hayan participado en más de 40 películas.
+SELECT 
+	"actor_id",
+	count("actor_id") AS "Peliculas"
+FROM film_actor fa 
+GROUP BY "actor_id"
+HAVING count("actor_id") > 40;
+
+--29. Obtener todas las películas y, si están disponibles en el inventario, mostrar la cantidad disponible.
+
+select f.film_id, inventory_id 
+from film f 
+left  join inventory
+on f.film_id = inventory.inventory_id 
+
+
+
+select 
+	count("film_id") as "cantidad_inventario", 
+	film_id
+from inventory i 
+group by i.film_id 
 
 
 
 select *
-from rental
+from film f 
 
-
-
+select *
+from inventory i 
