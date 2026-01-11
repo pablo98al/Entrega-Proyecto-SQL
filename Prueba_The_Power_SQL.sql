@@ -431,4 +431,73 @@ LEFT JOIN film_actor fa ON fa.film_id = f.film_id
 LEFT JOIN actor a ON fa.actor_id = a. actor_id
 WHERE c."name" <> 'Music'
 
+--57. Encuentra el título de todas las películas que fueron alquiladas por más de 8 días.
+--58. Encuentra el título de todas las películas que son de la misma categoría que ‘Animation’.
+SELECT f. title AS pelicula,
+       c."name" AS categoria
+FROM film f
+LEFT JOIN film_category fc ON f.film_id = fc.film_id
+LEFT JOIN category c ON fc.category_id = c.category_id
+WHERE c."name" = 'Animation'
 
+--59. Encuentra los nombres de las películas que tienen la misma duración que la película con el título ‘Dancing Fever’. Ordena los resultados
+--alfabéticamente por título de película.
+SELECT
+    title,
+    length
+FROM film
+WHERE length = (
+    SELECT length
+    FROM film
+    WHERE title = 'DANCING FEVER'
+)
+ORDER BY title;
+
+-- 60. Encuentra los nombres de los clientes que han alquilado al menos 7 películas distintas. Ordena los resultados alfabéticamente por apellido.
+SELECT c.first_name AS "nombre cliente",
+       c.last_name AS "apellido cliente",
+       count(rental_id) AS "alquileres"
+FROM rental r
+LEFT JOIN customer c ON c.customer_id = r.customer_id
+GROUP BY c.first_name,
+         c.last_name
+HAVING count(DISTINCT rental_id) > 7
+ORDER BY "apellido cliente";
+
+-- 61. Encuentra la cantidad total de películas alquiladas por categoría y muestra el nombre de la categoría junto con el recuento de alquileres.
+SELECT
+    c.name AS categoria,
+    COUNT(r.rental_id) AS peliculas_alquiladas
+FROM category c
+JOIN film_category fc ON c.category_id = fc.category_id
+JOIN film f ON fc.film_id = f.film_id
+JOIN inventory i ON f.film_id = i.film_id
+JOIN rental r ON i.inventory_id = r.inventory_id
+GROUP BY c.name
+ORDER BY c.name;
+
+--62. Encuentra el número de películas por categoría estrenadas en 2006.
+SELECT count(f."film_id") AS peliculas,
+       c."name" AS "Categoria"
+FROM film f
+LEFT JOIN film_category fc ON f.film_id = fc.film_id
+LEFT JOIN category c ON fc.category_id = c.category_id
+WHERE f.release_year = 2006
+GROUP BY c.category_id;
+
+--63. Obtén todas las combinaciones posibles de trabajadores con las tiendas que tenemos.
+SELECT s.first_name AS Nombre,
+       s. last_name AS Apellido,
+       s2.store_id
+FROM staff s
+CROSS JOIN store s2;
+
+--64. Encuentra la cantidad total de películas alquiladas por cada cliente y muestra el ID del cliente, su nombre y apellido junto con la cantidad de
+--películas alquiladas.
+SELECT count(rental_id) AS "peliculas alquiladas",
+       c.customer_id AS "ID del cliente",
+       c.first_name AS nombre,
+       c.last_name AS apellido
+FROM rental r
+LEFT JOIN customer c ON r.customer_id = c.customer_id
+GROUP BY c.customer_id
